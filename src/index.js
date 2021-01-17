@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const middlewares = require('./middlewares');
-require('./websocket');
+//require('./websocket');
 
 const app = express();
 
@@ -29,3 +29,5 @@ const port = process.env.PORT || 6060;
 app.listen(port, () => {
 	console.log(`Listening at http://localhost:${port}`);
 });
+
+require('./websocket');

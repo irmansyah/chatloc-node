@@ -1,16 +1,48 @@
  <!DOCTYPE html>
-<html>
+<html lang='en'>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatLoc</title>
+</head>
 <body>
 	<h1>Chat base on location</h1>
-	<button id='btnChat'>Send Chat</button>
+	<input type="chatText" id="chatText" name="chat">
+	<button id='btnChatSend'>Send Chat</button>
+	<button id='btnChatOnline'>Set Online</button>
+	<div></div>
+	<input type="locationText" id="locText" name="location">
 	<button id='btnLiveLoc'>Live Location</button>
 	<script>
+
 		let ws = new WebSocket('ws://localhost:6061');
-		const btnChat = document.getElementById('btnChat');
-		const btnLiveLoc = document.getElementById('btnLiveLoc');		
+		const chatText = document.getElementById('chatText');
+		const locationText = document.getElementById('locationText');
+		const btnChatSend = document.getElementById('btnChatSend');
+		const btnChatOnline = document.getElementById('btnChatOnline');
+		const btnLiveLoc = document.getElementById('btnLiveLoc');
 
 		//Event
-		btnChat.addEventListener('click', e => {
+		chatText.addEventListener('input', e => {
+			if (chatText.value.length > 0) {
+        console.log(`chat text input : ${e.target.value}`);
+      } else {
+        console.log('chat close typing...');
+      }
+		});
+
+		btnChatSend.addEventListener('click', e => {
+			const payLoad = {
+				wsType: {
+					type: 'chat',
+					method: 'send',
+					message: chatText.value
+				},
+			};
+			ws.send(JSON.stringify(payLoad));
+		});
+		
+		btnChatOnline.addEventListener('click', e => {
 			const payLoad = {
 				wsType: {
 					type: 'chat',
@@ -29,6 +61,23 @@
 			};
 			ws.send(JSON.stringify(payLoad));
 		});
+
+		ws.onmessage = message => {
+			const response = JSON.parse(message.data);
+			//console.log(`response : ${response.wsType.method}`);
+			if (response.wsType.type === 'chat') {
+				switch (response.wsType.method) {
+					case 'isOnline':
+						break;
+					case 'send':
+						console.log(`message is send : ${response.wsType.message}`);
+						break;
+					default:
+						break;
+				}
+			}	
+		};
+
 	</script>
 </body>
 </html> 
