@@ -1,0 +1,34 @@
+ <!DOCTYPE html>
+<html>
+<body>
+	<h1>Chat base on location</h1>
+	<button id='btnChat'>Send Chat</button>
+	<button id='btnLiveLoc'>Live Location</button>
+	<script>
+		let ws = new WebSocket('ws://localhost:6061');
+		const btnChat = document.getElementById('btnChat');
+		const btnLiveLoc = document.getElementById('btnLiveLoc');		
+
+		//Event
+		btnChat.addEventListener('click', e => {
+			const payLoad = {
+				wsType: {
+					type: 'chat',
+					method: 'isOnline',
+				},
+			};
+			ws.send(JSON.stringify(payLoad));
+		});
+
+		btnLiveLoc.addEventListener('click', e => {
+			const payLoad = {
+				wsType: {
+					type: 'liveLoc',
+					method: 'location',
+				}
+			};
+			ws.send(JSON.stringify(payLoad));
+		});
+	</script>
+</body>
+</html> 

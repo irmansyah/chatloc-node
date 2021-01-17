@@ -4,4 +4,7 @@ Chat With Location App
 	* [ ] Install Dependencies
 	* [ ] Setup Express App
 	* [ ] Setup Error And Not Found Handling.
-* 
+* [ ] Model DB
+	* What data will be store?
+* [ ] Setup Mongoose Model(s)
+* [ ] 
